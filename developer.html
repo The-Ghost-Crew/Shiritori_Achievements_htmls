@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Developer Tools</title>
+
+<style>
+body{
+    background:#1d1028;
+    color:white;
+    text-align:center;
+    font-family:Arial;
+}
+
+input{
+    width:450px;
+    max-width:90%;
+    padding:12px;
+    font-size:18px;
+}
+
+button{
+    margin-top:15px;
+    padding:10px 20px;
+    font-size:18px;
+}
+
+pre{
+    margin-top:30px;
+    background:black;
+    padding:20px;
+    display:inline-block;
+    text-align:left;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Developer Generator</h1>
+
+<p>Enter a Discord ID.</p>
+
+<input id="discordId">
+
+<br>
+
+<button onclick="generate()">Generate Codes</button>
+
+<pre id="output"></pre>
+
+<script>
+
+const DIGITS = "0123456789ABCDEFG";
+
+function toBase17(n){
+
+    if(n === 0) return "0";
+
+    let out = "";
+
+    while(n > 0){
+        out = DIGITS[n % 17] + out;
+        n = Math.floor(n / 17);
+    }
+
+    return out;
+
+}
+
+function expectedCheck(id,salt){
+
+    return (
+        (id * 37)
+        + (salt * 91)
+        + (id % 13)
+        + (salt % 7)
+    ) % 99999999;
+
+}
+
+function randomSalt(){
+
+    return Math.floor(
+        Math.random() * 9999999
+    );
+
+}
+
+function makeCode(page,id){
+
+    const salt = randomSalt();
+
+    const check = expectedCheck(id,salt);
+
+    return (
+        page
+        + "-"
+        + toBase17(id)
+        + "-"
+        + toBase17(salt)
+        + "-"
+        + toBase17(check)
+    );
+
+}
+
+function generate(){
+
+    const id = Number(
+        document.getElementById("discordId").value
+    );
+
+    if(!Number.isInteger(id)){
+        output.innerText = "Invalid Discord ID.";
+        return;
+    }
+
+    output.innerText =
+`PAGE A
+${makeCode("A",id)}
+
+PAGE B
+${makeCode("B",id)}
+
+PAGE C
+${makeCode("C",id)}`;
+
+}
+
+</script>
+
+</body>
+</html>
