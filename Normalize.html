@@ -2,623 +2,941 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Shiritori Normalizer</title>
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0c0c0f;--surface:#13131a;--border:#22222e;--border2:#2e2e3e;
-  --text:#dddde8;--muted:#55556a;--accent:#99eebb;--accent2:#6688ff;
-  --warnsoft:#ffaa55;--bad:#ff4444;--mono:'Courier New',monospace;
-}
-body{font-family:var(--mono);background:var(--bg);color:var(--text);min-height:100vh;padding:28px 16px 60px}
-.wrap{max-width:780px;margin:0 auto}
-h1{font-size:1.45rem;color:var(--accent);letter-spacing:.08em}
-.tagline{font-size:.72rem;color:var(--muted);letter-spacing:.1em;margin-top:3px;margin-bottom:24px}
-textarea{width:100%;height:90px;font-family:var(--mono);font-size:15px;padding:12px 14px;background:var(--surface);color:var(--text);border:1px solid var(--border2);border-radius:6px;resize:vertical;outline:none;transition:border-color .15s}
-textarea:focus{border-color:var(--accent)}
-.meta-row{display:flex;justify-content:space-between;margin-top:5px;font-size:11px;color:var(--muted)}
-.btn-row{display:flex;gap:8px;margin:12px 0;flex-wrap:wrap}
-button{font-family:var(--mono);font-size:12px;padding:8px 18px;cursor:pointer;background:var(--surface);color:var(--muted);border:1px solid var(--border2);border-radius:5px;transition:all .15s}
-button:hover{color:var(--accent);border-color:var(--accent);background:#0d1f17}
-button.primary{background:#0d1f17;color:var(--accent);border-color:var(--accent)}
-button.primary:hover{background:#112a1e}
-.out-block{background:var(--surface);border:1px solid var(--border2);border-radius:8px;overflow:hidden;margin-top:14px}
-.out-header{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:10px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between}
-.variant-list{padding:4px 0}
-.variant-row{display:flex;align-items:baseline;gap:12px;padding:8px 16px;border-bottom:1px solid var(--border);transition:background .1s}
-.variant-row:last-child{border-bottom:none}
-.variant-row:hover{background:#16161f}
-.v-num{font-size:10px;color:var(--muted);min-width:20px}
-.v-text{font-size:15px;color:var(--accent);font-weight:bold;letter-spacing:.03em}
-.v-empty{font-size:13px;color:var(--muted);font-style:italic}
-.warn-block{margin-top:10px;border-radius:7px;overflow:hidden;border:1px solid}
-.warn-block.unreg{border-color:#553300}
-.warn-block.invalid{border-color:#550000}
-.warn-header{font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:8px 14px;display:flex;align-items:center;gap:7px}
-.warn-block.unreg .warn-header{background:#1a0f00;color:var(--warnsoft)}
-.warn-block.invalid .warn-header{background:#1a0000;color:var(--bad)}
-.warn-body{padding:12px 14px;font-size:12px;line-height:1.8}
-.warn-block.unreg .warn-body{background:#130b00}
-.warn-block.invalid .warn-body{background:#0f0000}
-.char-tag{display:inline-block;background:#2a1500;border:1px solid #884400;border-radius:3px;padding:1px 7px;font-size:12px;color:#ffaa55;margin:2px 3px}
-.link{color:var(--accent2);text-decoration:none}
-.link:hover{text-decoration:underline}
-.cap-warn{font-size:11px;color:var(--warnsoft);padding:6px 16px 10px}
-.panel{margin-top:18px;background:var(--surface);border:1px solid var(--border2);border-radius:8px;overflow:hidden}
-.panel-header{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:10px 16px;border-bottom:1px solid var(--border);cursor:pointer;user-select:none;display:flex;justify-content:space-between}
-.panel-header:hover{color:var(--text)}
-.panel-body{padding:14px 16px;display:none}
-.panel-body.open{display:block}
-.override-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.override-row input{font-family:var(--mono);font-size:13px;padding:7px 10px;background:#0c0c0f;color:var(--text);border:1px solid var(--border2);border-radius:4px;width:190px;outline:none}
-.override-row input:focus{border-color:var(--accent)}
-.tag-list{margin-top:12px;min-height:20px}
-.o-tag{display:inline-flex;align-items:center;gap:5px;background:#0d0d14;border:1px solid var(--border2);border-radius:4px;padding:3px 9px;font-size:11px;color:var(--muted);margin:3px;cursor:pointer;transition:all .12s}
-.o-tag:hover{border-color:var(--bad);color:var(--bad)}
-.o-tag .arrow{color:var(--accent)}
-.info-card{margin-top:18px;background:#080d18;border:1px solid #223355;border-radius:8px;padding:16px;font-size:12px;line-height:1.9;color:#8899bb}
-.info-card h3{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent2);margin-bottom:10px}
-.abbr-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-.abbr-tag{background:#0c1420;border:1px solid #334;border-radius:3px;padding:2px 8px;font-size:11px;color:#6688cc}
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #0c0c0f;
+    --surface:   #13131a;
+    --surface2:  #1a1a24;
+    --border:    #252535;
+    --border2:   #333348;
+    --accent:    #7eb8f7;
+    --accent2:   #a78bfa;
+    --warn:      #f97316;
+    --error:     #ef4444;
+    --ok:        #4ade80;
+    --custom:    #f0c060;
+    --text:      #d4d4e8;
+    --muted:     #5a5a7a;
+    --mono:      'Courier New', monospace;
+  }
+
+  body {
+    font-family: var(--mono);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 28px 16px 60px;
+  }
+
+  .wrap { max-width: 780px; margin: 0 auto; }
+
+  header { margin-bottom: 28px; }
+  .logo { font-size: 11px; letter-spacing: 0.25em; color: var(--muted); text-transform: uppercase; margin-bottom: 6px; }
+  h1 { font-size: 1.75rem; font-weight: 700; color: var(--accent); letter-spacing: -0.01em; line-height: 1.1; }
+  .tagline { font-size: 11px; color: var(--muted); margin-top: 5px; letter-spacing: 0.05em; }
+
+  .input-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .card-label {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-label .pill {
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 20px;
+    padding: 1px 8px;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 80px;
+    font-family: var(--mono);
+    font-size: 15px;
+    padding: 10px 12px;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.15s;
+    line-height: 1.5;
+  }
+  textarea:focus { border-color: var(--accent); }
+
+  .btn-row { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; align-items: center; }
+  button {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    padding: 8px 18px;
+    border-radius: 5px;
+    border: 1px solid var(--border2);
+    background: var(--surface2);
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.12s;
+  }
+  button:hover { border-color: var(--accent); color: var(--accent); }
+  button.primary { background: #0d1f35; border-color: var(--accent); color: var(--accent); }
+  button.primary:hover { background: #122840; }
+  .char-count { font-size: 11px; color: var(--muted); margin-left: auto; }
+
+  .output-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 12px;
+    display: none;
+  }
+
+  .variant-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--surface2);
+  }
+  .variant-row:last-child { border-bottom: none; }
+  .v-num { font-size: 10px; color: var(--muted); min-width: 20px; }
+  .v-text { font-size: 16px; font-weight: 700; color: var(--ok); letter-spacing: 0.02em; word-break: break-all; }
+  .v-text.custom { color: var(--custom); }
+  .v-text.omit { color: var(--muted); font-weight: 400; font-style: italic; font-size: 13px; }
+  .v-badge {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: #2a2010;
+    border: 1px solid #6a5010;
+    color: var(--custom);
+    border-radius: 3px;
+    padding: 1px 6px;
+    margin-left: 4px;
+  }
+
+  .warn-card {
+    background: #1a100a;
+    border: 1px solid #5a2a0a;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 12px;
+    display: none;
+  }
+  .warn-card.invalid { background: #1a0a0a; border-color: #7a1010; }
+  .warn-title { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--warn); margin-bottom: 10px; }
+  .warn-title.error { color: var(--error); }
+  .unreg-chars { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  .unreg-chip { background: #2a1008; border: 1px solid #8a3010; border-radius: 4px; padding: 2px 10px; font-size: 13px; color: #ffaa77; }
+  .warn-body { font-size: 12px; color: #aaa; line-height: 1.8; }
+  .warn-body a { color: var(--accent); text-decoration: none; }
+  .warn-body a:hover { text-decoration: underline; }
+
+  .custom-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .custom-hint {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 10px;
+    line-height: 1.7;
+  }
+  .custom-hint strong { color: var(--custom); }
+  .custom-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+  .custom-row input {
+    font-family: var(--mono);
+    font-size: 13px;
+    padding: 7px 10px;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    outline: none;
+    flex: 1;
+    min-width: 120px;
+    transition: border-color 0.15s;
+  }
+  .custom-row input:focus { border-color: var(--custom); }
+  .custom-tags { display: flex; flex-wrap: wrap; gap: 6px; min-height: 24px; }
+  .c-tag {
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 11px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.12s;
+  }
+  .c-tag:hover { border-color: var(--error); color: var(--error); }
+
+  .info-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 12px; }
+  .info-toggle {
+    width: 100%; text-align: left; padding: 12px 16px;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--muted); background: none;
+    border: none; border-radius: 0; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .info-toggle:hover { color: var(--accent); border-color: transparent; }
+  .info-body { display: none; padding: 0 16px 16px; font-size: 12px; color: #888; line-height: 1.9; border-top: 1px solid var(--border); }
+  .info-body.open { display: block; }
+  .info-body a { color: var(--accent); text-decoration: none; }
+  .info-body a:hover { text-decoration: underline; }
+  .abbr-list { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+  .abbr-chip { background: var(--surface2); border: 1px solid var(--border2); border-radius: 3px; padding: 1px 8px; font-size: 11px; color: var(--accent2); }
+  .cap-warn { font-size: 11px; color: var(--warn); margin-top: 8px; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>Shiritori Normalizer</h1>
-  <div class="tagline">converts words to their spoken hyphenated form</div>
 
-  <textarea id="input" placeholder="Enter a word to normalize..."></textarea>
-  <div class="meta-row"><span id="charCount"></span><span id="spaceNote"></span></div>
+  <header>
+    <div class="logo">Shiritori</div>
+    <h1>Normalizer</h1>
+    <div class="tagline">Converts words to spoken hyphenated form · a-z, hyphen, apostrophe only</div>
+  </header>
 
-  <div class="btn-row">
-    <button class="primary" onclick="run()">Normalize</button>
-    <button onclick="copyAll()">Copy All</button>
-    <button onclick="clearInput()">Clear</button>
+  <div class="input-card">
+    <div class="card-label">Word to normalize</div>
+    <textarea id="input" placeholder="Type a word or phrase with a title prefix (e.g. dr. White)…" spellcheck="false"></textarea>
+    <div class="btn-row">
+      <button class="primary" id="normalizeBtn">Normalize</button>
+      <button id="clearBtn">Clear</button>
+      <button id="copyBtn" style="display:none">Copy all</button>
+      <span class="char-count" id="charCount">0 chars</span>
+    </div>
   </div>
 
-  <div id="mainOut" style="display:none">
-    <div class="out-block">
-      <div class="out-header"><span>Normalized Output</span><span id="variantCount"></span></div>
-      <div class="variant-list" id="variantList"></div>
-      <div id="capWarn"></div>
+  <div class="output-card" id="outputCard">
+    <div class="card-label">
+      Output variants
+      <span class="pill" id="variantPill"></span>
     </div>
-    <div id="warnArea"></div>
+    <div id="outputBody"></div>
+    <div class="cap-warn" id="capWarn" style="display:none"></div>
   </div>
 
-  <div class="panel">
-    <div class="panel-header" onclick="togglePanel()">
-      <span>Overrides</span><span id="panelArrow">▶</span>
+  <div class="warn-card" id="warnCard">
+    <div class="warn-title" id="warnTitle">Unregistered characters</div>
+    <div class="unreg-chars" id="unregChars"></div>
+    <div class="warn-body" id="warnBody"></div>
+  </div>
+
+  <div class="custom-card">
+    <div class="card-label">Extra variants</div>
+    <div class="custom-hint">
+      Add <strong>additional normalizations</strong> for a specific word.<br>
+      These are shown alongside the auto-generated variants, not instead of them.<br>
+      Example: <strong>007</strong> already normalizes to <em>zero-zero-seven</em> — adding <strong>double-o-seven</strong> shows both.
     </div>
-    <div class="panel-body" id="overPanel">
-      <div class="override-row">
-        <input id="oKey" placeholder="Word (e.g. 007)" />
-        <input id="oVal" placeholder="Override (e.g. double-o-seven)" />
-        <button onclick="addOverride()">Add</button>
-        <button onclick="clearOverrides()">Clear All</button>
-      </div>
-      <div class="tag-list" id="overList"></div>
+    <div class="custom-row">
+      <input id="customKey" placeholder="Word (e.g. 007)" />
+      <input id="customVal" placeholder="Extra variant (e.g. double-o-seven)" />
+      <button onclick="addCustom()">Add</button>
     </div>
+    <div class="custom-tags" id="customTags"></div>
   </div>
 
   <div class="info-card">
-    <h3>Suggest a Normalization</h3>
-    If a character triggers an unregistered warning, request its inclusion:<br>
-    → <a class="link" href="https://discord.com/channels/1145887707323699340/1360164828651716660" target="_blank">Discord #normalization-discussion</a><br>
-    → Message <strong>no_where.ghost_002</strong> directly<br><br>
-    <strong style="color:#6688aa">Recognized title abbreviations</strong> (permit period + space before next word):
-    <div class="abbr-list" id="abbrList"></div>
+    <button class="info-toggle" onclick="toggleInfo()">
+      <span>Normalization reference &amp; suggest a rule</span>
+      <span id="infoArrow">▶</span>
+    </button>
+    <div class="info-body" id="infoBody">
+      <p style="margin-top:12px">All output must only contain <strong style="color:var(--accent)">a–z</strong>, <strong style="color:var(--accent)">-</strong> (hyphen), and <strong style="color:var(--accent)">'</strong> (apostrophe). Words cannot start or end with a hyphen.</p>
+      <br>
+      <p><strong style="color:var(--text)">Title abbreviations</strong> — absorb a following period and space:</p>
+      <div class="abbr-list">
+        <span class="abbr-chip">dr</span><span class="abbr-chip">ms</span><span class="abbr-chip">mr</span>
+        <span class="abbr-chip">mrs</span><span class="abbr-chip">st</span><span class="abbr-chip">rd</span>
+        <span class="abbr-chip">and</span><span class="abbr-chip">mt</span>
+      </div>
+      <p><strong style="color:var(--text)">Punctuation quick reference:</strong></p>
+      <p style="margin-top:6px">
+        <code style="color:var(--accent2)">/  \</code> → hyphen (merges with adjacent -) &nbsp;·&nbsp;
+        <code style="color:var(--accent2)">~  _</code> → hyphen (no merge, ignored at edges) &nbsp;·&nbsp;
+        <code style="color:var(--accent2)">.</code> → hyphen (any count = 1) &nbsp;·&nbsp;
+        <code style="color:var(--accent2)">,</code> → hyphen (ignored at edges) &nbsp;·&nbsp;
+        <code style="color:var(--accent2)">:</code> → hyphen (:: = colon-colon, ::: = colon-colon-colon) &nbsp;·&nbsp;
+        <code style="color:var(--accent2)">;</code> → hyphen (;; = semicolon / semi-colon variants) &nbsp;·&nbsp;
+        <code style="color:var(--accent2)">+</code> → plus (each + = own segment) &nbsp;·&nbsp;
+        <code style="color:var(--accent2)">() [] {}</code> → paired = hyphen, unpaired = parenthesis / bracket / curly-bracket &nbsp;·&nbsp;
+        <code style="color:var(--accent2)">!</code> → exclamation-mark / exclamation-point / omit &nbsp;·&nbsp;
+        <code style="color:var(--accent2)">?</code> → question-mark / omit
+      </p>
+      <br>
+      <p><strong style="color:var(--text)">Missing a rule? Suggest it:</strong></p>
+      <p>→ <a href="https://discord.com/channels/1145887707323699340/1360164828651716660" target="_blank">Discord normalization channel</a></p>
+      <p>→ Message <strong style="color:var(--accent2)">no_where.ghost_002</strong> on Discord</p>
+    </div>
   </div>
+
 </div>
-
 <script>
-// ═══════════════════════════════════════════
-//  IN-MEMORY OVERRIDES (no localStorage)
-// ═══════════════════════════════════════════
-var overrides = {};
-
-function addOverride() {
-  var k = document.getElementById("oKey").value.trim();
-  var v = document.getElementById("oVal").value.trim();
-  if (!k || !v) return;
-  overrides[k] = v;
-  document.getElementById("oKey").value = "";
-  document.getElementById("oVal").value = "";
-  renderOverrides();
-}
-function clearOverrides() { overrides = {}; renderOverrides(); }
-function removeOverride(k) { delete overrides[k]; renderOverrides(); }
-function renderOverrides() {
-  var keys = Object.keys(overrides);
-  var el = document.getElementById("overList");
-  if (!keys.length) { el.innerHTML = "<span style='color:#333;font-size:11px'>No overrides</span>"; return; }
-  el.innerHTML = keys.map(function(k) {
-    return '<span class="o-tag" onclick="removeOverride(' + JSON.stringify(k) + ')" title="Click to remove">'
-      + esc(k) + ' <span class="arrow">\u2192</span> ' + esc(overrides[k]) + ' \u2715</span>';
-  }).join("");
-}
-
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
 //  CONSTANTS
-// ═══════════════════════════════════════════
-var TITLE_ABBRS = ["dr","ms","mr","mrs","st","rd","and","mt"];
-var MAX_VARIANTS = 64;
-var PAIRNAME = {"(":"parenthesis","[":"bracket","{":"curly-bracket"};
-var CLOSE_TO_OPEN = {")":"(", "]":"[", "}":"{"};
+// ═══════════════════════════════════════════════════════════
 
-var _ones = ["zero","one","two","three","four","five","six","seven","eight","nine",
-             "ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen",
-             "seventeen","eighteen","nineteen"];
-var _tens = ["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
+const TITLE_ABBRS = ["dr","ms","mr","mrs","st","rd","and","mt"];
+const MAX_VARIANTS = 48;
+const DISCORD_LINK = "https://discord.com/channels/1145887707323699340/1360164828651716660";
+const DISCORD_USER = "no_where.ghost_002";
 
-// ═══════════════════════════════════════════
-//  UTILITIES
-// ═══════════════════════════════════════════
-function esc(s) {
-  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const ones = [
+  "zero","one","two","three","four","five","six","seven","eight","nine",
+  "ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen",
+  "seventeen","eighteen","nineteen"
+];
+const tensW = ["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
+
+// ═══════════════════════════════════════════════════════════
+//  STORAGE — custom additions (not replacements)
+// ═══════════════════════════════════════════════════════════
+
+function getCustom() {
+  try { return JSON.parse(localStorage.getItem("sn_custom") || "{}"); } catch { return {}; }
 }
+function setCustom(o) { localStorage.setItem("sn_custom", JSON.stringify(o)); }
 
-function normalizeRaw(s) {
-  // Fancy quotes → plain apostrophe
-  s = s.replace(/[\u2018\u2019\u201A\u201B\u0060\u00B4\uFF07]/g, "'");
-  // Fancy dashes → plain hyphen
-  s = s.replace(/[\u2013\u2014\u2015\u2212\uFE58\uFE63\uFF0D]/g, "-");
-  // Strip combining diacritics
-  s = s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  return s;
+function addCustom() {
+  const k = document.getElementById("customKey").value.trim();
+  const v = document.getElementById("customVal").value.trim();
+  if (!k || !v) return;
+  const o = getCustom();
+  if (!o[k]) o[k] = [];
+  if (!o[k].includes(v)) o[k].push(v);
+  setCustom(o);
+  document.getElementById("customKey").value = "";
+  document.getElementById("customVal").value = "";
+  renderCustom();
 }
-
-// ═══════════════════════════════════════════
-//  NUMBER → WORDS
-// ═══════════════════════════════════════════
-function numToWords(n) {
-  if (n === 0) return "zero";
-  if (n < 20)  return _ones[n];
-  if (n < 100) return _tens[Math.floor(n/10)] + (n%10 ? "-" + _ones[n%10] : "");
-  if (n < 1e3) return _ones[Math.floor(n/100)] + "-hundred" + (n%100 ? "-" + numToWords(n%100) : "");
-  if (n < 1e6) return numToWords(Math.floor(n/1e3)) + "-thousand" + (n%1e3 ? "-" + numToWords(n%1e3) : "");
-  if (n < 1e9) return numToWords(Math.floor(n/1e6)) + "-million" + (n%1e6 ? "-" + numToWords(n%1e6) : "");
-  if (n < 1e12) return numToWords(Math.floor(n/1e9)) + "-billion" + (n%1e9 ? "-" + numToWords(n%1e9) : "");
-  if (n < 1e15) return numToWords(Math.floor(n/1e12)) + "-trillion" + (n%1e12 ? "-" + numToWords(n%1e12) : "");
-  if (n < 1e18) return numToWords(Math.floor(n/1e15)) + "-quadrillion" + (n%1e15 ? "-" + numToWords(n%1e15) : "");
-  return null; // beyond quadrillion
+function removeCustomEntry(word, variant) {
+  const o = getCustom();
+  if (!o[word]) return;
+  o[word] = o[word].filter(v => v !== variant);
+  if (o[word].length === 0) delete o[word];
+  setCustom(o);
+  renderCustom();
 }
-
-// ═══════════════════════════════════════════
-//  PRE-PROCESS (spaces / title abbrs)
-// ═══════════════════════════════════════════
-function preProcess(raw) {
-  var spaces = (raw.match(/ /g) || []).length;
-  if (spaces === 0) return { word: raw, invalid: false };
-  if (spaces === 1) {
-    var idx = raw.indexOf(" ");
-    var left = raw.slice(0, idx).toLowerCase();
-    var right = raw.slice(idx + 1);
-    var match = TITLE_ABBRS.filter(function(a){ return left === a || left === a + "."; })[0];
-    if (match && right.length > 0) {
-      var dotted = left.endsWith(".") ? left : left + ".";
-      return { word: dotted + right, invalid: false };
-    }
-    return { word: raw, invalid: true,
-      invalidReason: "Input contains a space not preceded by a recognized title abbreviation. Words must be single tokens." };
+function renderCustom() {
+  const o = getCustom();
+  const el = document.getElementById("customTags");
+  const keys = Object.keys(o);
+  if (!keys.length) {
+    el.innerHTML = '<span style="font-size:11px;color:var(--muted)">No extra variants added</span>';
+    return;
   }
-  return { word: raw, invalid: true,
-    invalidReason: "Input contains multiple spaces. Only one space is allowed (with a title abbreviation prefix)." };
+  let html = "";
+  for (const word of keys) {
+    for (const variant of o[word]) {
+      html += `<span class="c-tag" title="Click to remove"
+        onclick="removeCustomEntry(${JSON.stringify(word)}, ${JSON.stringify(variant)})">
+        ${word} + ${variant} ✕
+      </span>`;
+    }
+  }
+  el.innerHTML = html;
 }
 
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+//  NUMBER → WORDS  (digit by digit)
+// ═══════════════════════════════════════════════════════════
+
+function digitToWord(d) { return ones[parseInt(d, 10)]; }
+
+// ═══════════════════════════════════════════════════════════
+//  INPUT VALIDATION
+// ═══════════════════════════════════════════════════════════
+
+function parseInput(raw) {
+  const trimmed = raw.trim();
+  if (!trimmed) return { valid: false, reason: "empty" };
+
+  const spaceIdx = trimmed.indexOf(" ");
+  if (spaceIdx === -1) return { valid: true, prefix: null, word: trimmed };
+
+  const before = trimmed.slice(0, spaceIdx).toLowerCase().replace(/\.$/, "");
+  if (TITLE_ABBRS.includes(before)) {
+    const after = trimmed.slice(spaceIdx + 1).trim();
+    if (after.includes(" ")) return { valid: false, reason: "multi-word" };
+    return { valid: true, prefix: before, word: after };
+  }
+  return { valid: false, reason: "invalid-space" };
+}
+
+// ═══════════════════════════════════════════════════════════
+//  DIACRITICS
+// ═══════════════════════════════════════════════════════════
+
+function stripDiacritics(s) {
+  return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+// ═══════════════════════════════════════════════════════════
+//  KNOWN PUNCT SET
+// ═══════════════════════════════════════════════════════════
+
+const KNOWN_PUNCT = new Set(['(',')','{','}','[',']','/','\\','~','_','.',',',':',';','+','!','?',"'",'`','^','-']);
+
+// ═══════════════════════════════════════════════════════════
 //  TOKENIZER
-// ═══════════════════════════════════════════
-function tokenize(s) {
-  var tokens = [];
-  var i = 0;
+// ═══════════════════════════════════════════════════════════
+
+function tokenize(raw) {
+  const s = stripDiacritics(raw).toLowerCase();
+  const tokens = [];
+  let i = 0;
   while (i < s.length) {
-    var c = s[i];
-    if (/[a-zA-Z]/.test(c)) { tokens.push({type:"letter", val:c.toLowerCase()}); i++; continue; }
+    const c = s[i];
+
+    // Digit run
     if (/[0-9]/.test(c)) {
-      var run = "";
+      let run = "";
       while (i < s.length && /[0-9]/.test(s[i])) { run += s[i]; i++; }
-      tokens.push({type:"digits", val:run}); continue;
+      tokens.push({ t: "digit-run", v: run });
+      continue;
     }
-    if ("([{".indexOf(c) >= 0) { tokens.push({type:"open", char:c}); i++; continue; }
-    if (")]}".indexOf(c) >= 0) { tokens.push({type:"close", char:c}); i++; continue; }
-    // Run of same char
-    var run2 = c; var j = i + 1;
-    while (j < s.length && s[j] === c) { run2 += s[j]; j++; }
-    tokens.push({type:"punct", char:c, count:run2.length});
-    i = j;
+
+    // Letter
+    if (/[a-z]/.test(c)) {
+      tokens.push({ t: "letter", v: c });
+      i++; continue;
+    }
+
+    // Apostrophe
+    if (c === "'") {
+      tokens.push({ t: "apostrophe", v: "'" });
+      i++; continue;
+    }
+
+    // Explicit hyphen
+    if (c === "-") {
+      tokens.push({ t: "explicit-hyphen", v: "-" });
+      i++; continue;
+    }
+
+    // Known punct — collect run of same char
+    if (KNOWN_PUNCT.has(c)) {
+      let run = "";
+      while (i < s.length && s[i] === c) { run += c; i++; }
+      tokens.push({ t: "punct", ch: c, count: run.length, v: run });
+      continue;
+    }
+
+    // Unknown
+    tokens.push({ t: "unknown", v: c });
+    i++;
   }
   return tokens;
 }
 
-// ═══════════════════════════════════════════
-//  PAREN PAIRING
-// ═══════════════════════════════════════════
-function annotateParens(tokens) {
-  var stacks = {"(":[],  "[":[],  "{":[]} ;
-  for (var i = 0; i < tokens.length; i++) {
-    var t = tokens[i];
-    if (t.type === "open" || t.type === "close") t.paired = false;
-    if (t.type === "open") {
-      stacks[t.char].push(i);
-    } else if (t.type === "close") {
-      var oc = CLOSE_TO_OPEN[t.char];
-      if (oc && stacks[oc].length > 0) {
-        var oi = stacks[oc].pop();
-        tokens[oi].paired = true; tokens[oi].closeIdx = i;
-        t.paired = true; t.openIdx = oi;
+// ═══════════════════════════════════════════════════════════
+//  BRACKET PAIRING
+// ═══════════════════════════════════════════════════════════
+
+const OPEN_CLOSE = { "(": ")", "[": "]", "{": "}" };
+const CLOSE_OPEN = { ")": "(", "]": "[", "}": "{" };
+const BNAMES     = {
+  "(": "parenthesis", ")": "parenthesis",
+  "[": "bracket",     "]": "bracket",
+  "{": "curly-bracket", "}": "curly-bracket"
+};
+
+function labelBrackets(tokens) {
+  const result = tokens.map(tk => ({ ...tk, paired: false, pairIdx: -1 }));
+  const stacks = { "(": [], "[": "{": [] };
+  // reset properly
+  const stk = { "(": [], "[": [], "{": [] };
+
+  for (let i = 0; i < result.length; i++) {
+    const tk = result[i];
+    if (tk.t !== "punct") continue;
+    const ch = tk.ch;
+    if (ch in OPEN_CLOSE) {
+      stk[ch].push(i);
+    } else if (ch in CLOSE_OPEN) {
+      const opener = CLOSE_OPEN[ch];
+      if (stk[opener] && stk[opener].length > 0) {
+        const oi = stk[opener].pop();
+        result[oi].paired = true; result[oi].pairIdx = i;
+        result[i].paired  = true; result[i].pairIdx  = oi;
       }
     }
   }
+  return result;
 }
 
-// ═══════════════════════════════════════════
-//  SLOT BUILDER
-//  Node kinds: lit, word, hyph, slash, apos, unreg
-// ═══════════════════════════════════════════
-function buildSlots(tokens) {
-  var n = tokens.length;
-  var unregs = {};
-  var slots = [];
-  var i = 0;
+// ═══════════════════════════════════════════════════════════
+//  SEGMENT BUILDER
+//  Each segment: { alts: string[], isH: bool, isMerging: bool }
+//  isH = this position produces a hyphen
+//  isMerging = stacks with adjacent explicit hyphens (/ and \)
+// ═══════════════════════════════════════════════════════════
 
-  while (i < n) {
-    var t = tokens[i];
-    var atStart = (i === 0);
-    var atEnd   = (i === n - 1);
+function buildSegments(tokens) {
+  const segs = [];
+  const n = tokens.length;
 
-    if (t.type === "letter") {
-      slots.push([[{k:"lit", v:t.val}]]);
-      i++; continue;
-    }
+  const push = (alts, isH=false, isMerging=false) =>
+    segs.push({ alts: Array.isArray(alts) ? alts : [alts], isH, isMerging });
 
-    if (t.type === "digits") {
-      // Each digit converted individually: 007 -> zero-zero-seven, A3B -> a-three-b
-      for (var di = 0; di < t.val.length; di++) {
-        var dnum = parseInt(t.val[di], 10);
-        slots.push([[{k:"word", v:_ones[dnum]}]]);
+  for (let i = 0; i < n; i++) {
+    const tk = tokens[i];
+    const atStart = i === 0;
+    const atEnd   = i === n - 1;
+
+    switch (tk.t) {
+      case "letter":
+        push([tk.v]);
+        break;
+
+      case "apostrophe":
+        push(["'"]);
+        break;
+
+      case "explicit-hyphen":
+        push(["-"], true, false);
+        break;
+
+      case "unknown":
+        push([{ unreg: tk.v }]);
+        break;
+
+      case "digit-run": {
+        // Each digit becomes its own word, separated by hyphens
+        const digits = tk.v.split("");
+        for (let d = 0; d < digits.length; d++) {
+          if (d > 0) push([""], true, false);
+          push([digitToWord(digits[d])]);
+        }
+        break;
       }
-      i++; continue;
-    }
 
-    if (t.type === "open") {
-      var name = PAIRNAME[t.char];
-      // "at start" means all preceding tokens are also open parens (word hasn't begun)
-      var allOpenSoFar = true;
-      for (var pi3 = 0; pi3 < i; pi3++) {
-        if (tokens[pi3].type !== "open") { allOpenSoFar = false; break; }
+      case "punct": {
+        const ch = tk.ch;
+        const count = tk.count;
+
+        // ── Slash / Backslash — merging hyphens ──
+        if (ch === "/" || ch === "\\") {
+          if (atStart) break; // ignored at word start
+          push([""], true, true); // merging hyphen
+          break;
+        }
+
+        // ── Tilde / Underscore — non-merging, ignored at edges ──
+        if (ch === "~" || ch === "_") {
+          if (atStart || atEnd) break;
+          push([""], true, false);
+          break;
+        }
+
+        // ── Period — any count = 1 hyphen, ignored at edges ──
+        if (ch === ".") {
+          if (atStart || atEnd) break;
+          push([""], true, false);
+          break;
+        }
+
+        // ── Comma — 1 hyphen regardless of count, ignored at edges ──
+        if (ch === ",") {
+          if (atStart || atEnd) break;
+          push([""], true, false);
+          break;
+        }
+
+        // ── Colon ──
+        if (ch === ":") {
+          if (count >= 3) push(["colon-colon-colon"]);
+          else if (count === 2) push(["colon-colon"]);
+          else push([""], true, false); // single = hyphen
+          break;
+        }
+
+        // ── Semicolon ──
+        if (ch === ";") {
+          if (count >= 2) {
+            const v1 = Array(count).fill("semicolon").join("-");
+            const v2 = Array(count).fill("semi-colon").join("-");
+            push([v1, v2]); // branching variant
+          } else {
+            push([""], true, false); // single = hyphen
+          }
+          break;
+        }
+
+        // ── Plus — each + is its own "plus" segment ──
+        if (ch === "+") {
+          for (let p = 0; p < count; p++) {
+            if (p > 0) push([""], true, false);
+            push(["plus"]);
+          }
+          break;
+        }
+
+        // ── Opening brackets ──
+        if (ch === "(" || ch === "[" || ch === "{") {
+          const name = BNAMES[ch];
+          if (tk.paired) {
+            // Paired: at word start = nothing, otherwise = 1 hyphen
+            if (atStart) break;
+            push([""], true, false);
+          } else {
+            // Unpaired openers at word start = nothing
+            if (atStart) break;
+            for (let p = 0; p < count; p++) {
+              if (p > 0) push([""], true, false);
+              push([name]);
+            }
+          }
+          break;
+        }
+
+        // ── Closing brackets ──
+        if (ch === ")" || ch === "]" || ch === "}") {
+          const name = BNAMES[ch];
+          if (tk.paired) {
+            // Paired: at word end = nothing, otherwise = 1 hyphen
+            if (atEnd) break;
+            push([""], true, false);
+          } else {
+            // Unpaired closers at word end = nothing
+            if (atEnd) break;
+            for (let p = 0; p < count; p++) {
+              if (p > 0) push([""], true, false);
+              push([name]);
+            }
+          }
+          break;
+        }
+
+        // ── Exclamation mark ──
+        if (ch === "!") {
+          push(["exclamation-mark", "exclamation-point", ""]);
+          break;
+        }
+
+        // ── Question mark ──
+        if (ch === "?") {
+          push(["question-mark", ""]);
+          break;
+        }
+
+        // ── Anything else unregistered ──
+        push([{ unreg: ch }]);
+        break;
       }
-      if (allOpenSoFar) {
-        slots.push([[{k:"lit", v:""}]]);
-      } else if (t.paired) {
-        slots.push([[{k:"hyph"}]]);
-      } else {
-        slots.push([[{k:"word", v:name}]]);
-      }
-      i++; continue;
     }
-
-    if (t.type === "close") {
-      var oc2 = CLOSE_TO_OPEN[t.char];
-      var name2 = PAIRNAME[oc2 || "("];
-      if (atEnd) {
-        slots.push([[{k:"lit", v:""}]]);
-      } else if (t.paired) {
-        slots.push([[{k:"hyph"}]]);
-      } else {
-        slots.push([[{k:"word", v:name2}]]);
-      }
-      i++; continue;
-    }
-
-    if (t.type === "punct") {
-      var c = t.char;
-      var count = t.count;
-
-      function push1(nodes) { slots.push([nodes]); }
-      function pushN() { slots.push(Array.prototype.slice.call(arguments)); }
-
-      switch (c) {
-        case "-":
-          if (atStart || atEnd) { push1([]); break; }
-          var hArr = [];
-          for (var h = 0; h < count; h++) hArr.push({k:"hyph"});
-          push1(hArr); break;
-
-        case "/": case "\\":
-          if (atStart) { push1([]); break; }
-          push1([{k:"slash"}]); break;
-
-        case "~": case "_":
-          if (atStart || atEnd) { push1([]); break; }
-          push1([{k:"hyph"}]); break;
-
-        case ".":
-          if (atStart || atEnd) { push1([]); break; }
-          push1([{k:"hyph"}]); break;
-
-        case ",":
-          if (atStart || atEnd) { push1([]); break; }
-          push1([{k:"hyph"}]); break;
-
-        case "'":
-          push1([{k:"apos", v:"'".repeat(count)}]); break;
-
-        case ":":
-          if (atStart || atEnd) { push1([]); break; }
-          if (count === 1) { push1([{k:"hyph"}]); break; }
-          var colonStr = [];
-          for (var ci = 0; ci < count; ci++) colonStr.push("colon");
-          push1([{k:"word", v:colonStr.join("-")}]); break;
-
-        case ";":
-          if (atStart || atEnd) { push1([]); break; }
-          if (count === 1) { push1([{k:"hyph"}]); break; }
-          var scA = []; var scB = [];
-          for (var si = 0; si < count; si++) { scA.push("semicolon"); scB.push("semi-colon"); }
-          pushN([{k:"word", v:scA.join("-")}], [{k:"word", v:scB.join("-")}]); break;
-
-        case "+":
-          var plusArr = [];
-          for (var pi2 = 0; pi2 < count; pi2++) plusArr.push("plus");
-          push1([{k:"word", v:plusArr.join("-")}]); break;
-
-        case "!":
-          pushN([{k:"word",v:"exclamation-mark"}], [{k:"word",v:"exclamation-point"}], []); break;
-
-        case "?":
-          pushN([{k:"word",v:"question-mark"}], []); break;
-
-        case "`":
-          push1([{k:"apos", v:"'"}]); break;
-
-        default:
-          unregs[c] = true;
-          push1([{k:"unreg", v:c}]); break;
-      }
-      i++; continue;
-    }
-
-    // fallback
-    unregs["?"] = true;
-    slots.push([[{k:"unreg", v:"?"}]]);
-    i++;
   }
 
-  return { slots: slots, unregs: unregs };
+  return segs;
 }
 
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
 //  CARTESIAN PRODUCT
-// ═══════════════════════════════════════════
-function cartesian(slots) {
-  var acc = [[]];
-  var capped = false;
-  for (var si = 0; si < slots.length; si++) {
-    var slot = slots[si];
-    var next = [];
-    for (var ai = 0; ai < acc.length; ai++) {
-      for (var oi = 0; oi < slot.length; oi++) {
-        next.push(acc[ai].concat(slot[oi]));
-        if (next.length >= MAX_VARIANTS) { return { res: next, capped: true }; }
-      }
+// ═══════════════════════════════════════════════════════════
+
+function cartesian(arrays) {
+  let results = [[]];
+  for (const arr of arrays) {
+    const next = [];
+    for (const existing of results) {
+      for (const item of arr) next.push([...existing, item]);
     }
-    acc = next;
+    results = next;
+    if (results.length > MAX_VARIANTS) { results = results.slice(0, MAX_VARIANTS); break; }
   }
-  return { res: acc, capped: false };
+  return results;
 }
 
-// ═══════════════════════════════════════════
-//  ASSEMBLY
-//  B = collapsible word-border hyph
-//  H = real explicit hyphen (stacks)
-//  S = slash (merging: adds 1 to adjacent real hyphens)
-// ═══════════════════════════════════════════
-function assembleClean(nodes) {
-  // Filter out unreg and empty lits
-  var filtered = nodes.filter(function(nd) {
-    return nd.k !== "unreg" && !(nd.k === "lit" && nd.v === "");
+// ═══════════════════════════════════════════════════════════
+//  VARIANT ASSEMBLY
+// ═══════════════════════════════════════════════════════════
+
+function assembleVariants(segs) {
+  const unregChars = new Set();
+
+  // Strip unreg objects, collect them
+  const cleanSegs = segs.map(seg => {
+    const alts = seg.alts.map(a => {
+      if (typeof a === "object" && a.unreg) { unregChars.add(a.unreg); return ""; }
+      return a;
+    });
+    return { ...seg, alts: [...new Set(alts)] };
   });
-  if (!filtered.length) return "";
 
-  // Expand word nodes with collapsible border markers
-  var expanded = [];
-  for (var i = 0; i < filtered.length; i++) {
-    var nd = filtered[i];
-    if (nd.k === "word") {
-      expanded.push({k:"B"});
-      var parts = nd.v.split("-");
-      for (var pi = 0; pi < parts.length; pi++) {
-        if (parts[pi]) expanded.push({k:"L", v:parts[pi]});
-        if (pi < parts.length - 1) expanded.push({k:"H"});
-      }
-      expanded.push({k:"B"});
-    } else if (nd.k === "lit")  { if (nd.v) expanded.push({k:"L", v:nd.v}); }
-    else if (nd.k === "apos")   { expanded.push({k:"A", v:nd.v}); }
-    else if (nd.k === "hyph")   { expanded.push({k:"H"}); }
-    else if (nd.k === "slash")  { expanded.push({k:"S"}); }
-  }
+  const combos = cartesian(cleanSegs.map(s => s.alts));
+  const capped = combos.length >= MAX_VARIANTS;
 
-  // Merge runs of B/H/S
-  // only-B (or only-S with B): → 1
-  // H present: count(H) + (any S ? 1 : 0), B ignored
-  var merged = [];
-  var ei = 0;
-  while (ei < expanded.length) {
-    var e = expanded[ei];
-    if (e.k === "B" || e.k === "H" || e.k === "S") {
-      var bc = 0, hc = 0, sc = 0;
-      while (ei < expanded.length && (expanded[ei].k === "B" || expanded[ei].k === "H" || expanded[ei].k === "S")) {
-        if (expanded[ei].k === "B") bc++;
-        else if (expanded[ei].k === "H") hc++;
-        else sc++;
-        ei++;
-      }
-      var count2 = (hc === 0) ? 1 : hc + (sc > 0 ? 1 : 0);
-      merged.push({k:"H", count:count2});
-    } else {
-      merged.push(e);
-      ei++;
+  const seen = new Set();
+  const variants = [];
+
+  for (const combo of combos) {
+    const str = assembleSingle(combo, cleanSegs);
+    if (str !== null && !seen.has(str)) {
+      seen.add(str);
+      variants.push(str);
     }
   }
 
-  // Stringify
-  var out = "";
-  for (var mi = 0; mi < merged.length; mi++) {
-    var m = merged[mi];
-    if (m.k === "L" || m.k === "A") out += m.v;
-    else if (m.k === "H") { for (var hi = 0; hi < m.count; hi++) out += "-"; }
-  }
-
-  // Apostrophe eats preceding hyphen(s)
-  out = out.replace(/-+(')/g, "$1");
-
-  // Strip leading/trailing hyphens
-  out = out.replace(/^-+|-+$/g, "");
-
-  return out;
+  return { variants, unregChars: [...unregChars], capped };
 }
 
-// ═══════════════════════════════════════════
-//  MAIN NORMALIZER
-// ═══════════════════════════════════════════
+function assembleSingle(combo, segs) {
+  // Step 1: build a raw list of pieces with metadata
+  // piece: { val: string, isH: bool, isMerging: bool }
+  const pieces = combo.map((val, i) => ({
+    val,
+    isH: segs[i].isH && val === "",
+    isMerging: segs[i].isMerging || false,
+    isExplicit: segs[i].alts[0] === "-" && segs[i].isH, // explicit hyphen token
+  }));
+
+  // Step 2: resolve hyphen runs
+  // Walk through pieces, collecting runs of hyphen-producing pieces (isH=true or explicit)
+  let out = "";
+  let i = 0;
+
+  while (i < pieces.length) {
+    const p = pieces[i];
+
+    if (!p.isH && p.val !== "-") {
+      // Normal content piece
+      // Check if it starts with apostrophe — eat a trailing generated hyphen from out
+      if (p.val.startsWith("'") && out.endsWith("-")) {
+        out = out.slice(0, -1);
+      }
+      out += p.val;
+      i++;
+      continue;
+    }
+
+    // This piece is hyphen-producing — collect the full contiguous run
+    let j = i;
+    let explicitCount = 0;
+    let mergingCount  = 0;
+    let hasNormal     = false;
+
+    while (j < pieces.length && (pieces[j].isH || pieces[j].val === "-")) {
+      if (pieces[j].isMerging) mergingCount++;
+      else if (pieces[j].val === "-") explicitCount++;
+      else hasNormal = true;
+      j++;
+    }
+
+    // Also absorb trailing explicit hyphens from already-built out
+    while (out.endsWith("-")) {
+      out = out.slice(0, -1);
+      explicitCount++;
+    }
+
+    const totalHyphens = explicitCount + mergingCount + (hasNormal || (!mergingCount && !explicitCount) ? 1 : 0);
+    out += "-".repeat(Math.max(totalHyphens, 1));
+    i = j;
+  }
+
+  // Step 3: strip leading/trailing hyphens
+  out = out.replace(/^-+/, "").replace(/-+$/, "");
+
+  // Return null for empty (don't add as variant unless it's the only option)
+  return out || null;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  NORMALIZE WORD
+// ═══════════════════════════════════════════════════════════
+
 function normalizeWord(raw) {
-  if (overrides[raw]) {
-    return { variants:[overrides[raw]], unregs:{}, capped:false, overridden:true };
-  }
+  const tokens  = tokenize(raw);
+  const labeled = labelBrackets(tokens);
+  const segs    = buildSegments(labeled);
+  const result  = assembleVariants(segs);
 
-  var pre = preProcess(raw);
-  if (pre.invalid) {
-    return { variants:[], unregs:{}, capped:false, invalid:true, invalidReason:pre.invalidReason };
-  }
-
-  var s = normalizeRaw(pre.word);
-  var tokens = tokenize(s);
-  annotateParens(tokens);
-  var built = buildSlots(tokens);
-  var cp = cartesian(built.slots);
-
-  var seen = {};
-  var variants = [];
-  for (var i = 0; i < cp.res.length; i++) {
-    var v = assembleClean(cp.res[i]);
-    if (!seen[v]) {
-      seen[v] = true;
-      if (v.length > 0) variants.push(v);
+  // Append any custom additions for this exact word
+  const custom = getCustom();
+  const extras = custom[raw] || [];
+  const allVariants = [...result.variants];
+  const customVariants = [];
+  for (const e of extras) {
+    if (!allVariants.includes(e)) {
+      allVariants.push(e);
+      customVariants.push(e);
     }
   }
 
+  return { ...result, variants: allVariants, customVariants };
+}
+
+// ═══════════════════════════════════════════════════════════
+//  TITLE PREFIX HANDLING
+// ═══════════════════════════════════════════════════════════
+
+function normalizeTitleWord(prefix, wordRaw) {
+  const wordResult = normalizeWord(wordRaw);
   return {
-    variants: variants.length ? variants : [""],
-    unregs: built.unregs,
-    capped: cp.capped,
-    invalid: false
+    variants: wordResult.variants.map(v => prefix + "-" + v),
+    customVariants: wordResult.customVariants.map(v => prefix + "-" + v),
+    unregChars: wordResult.unregChars,
+    capped: wordResult.capped,
   };
 }
 
-// ═══════════════════════════════════════════
-//  UI
-// ═══════════════════════════════════════════
-function run() {
-  var raw = document.getElementById("input").value;
-  if (!raw.trim()) return;
-  var result = normalizeWord(raw);
-  document.getElementById("mainOut").style.display = "block";
-  var vl = document.getElementById("variantList");
-  var vc = document.getElementById("variantCount");
-  var cw = document.getElementById("capWarn");
+// ═══════════════════════════════════════════════════════════
+//  ENTRY POINT
+// ═══════════════════════════════════════════════════════════
 
-  if (result.invalid) {
-    vl.innerHTML = '<div class="variant-row"><span class="v-empty">Invalid \u2014 see warning below</span></div>';
-    vc.textContent = ""; cw.innerHTML = "";
-  } else if (result.overridden) {
-    vl.innerHTML = '<div class="variant-row"><span class="v-num">1.</span><span class="v-text">'
-      + esc(result.variants[0]) + '</span><span style="font-size:10px;color:var(--muted);margin-left:8px">[override]</span></div>';
-    vc.textContent = "1 variant"; cw.innerHTML = "";
-  } else {
-    vl.innerHTML = result.variants.map(function(v, i) {
-      return '<div class="variant-row"><span class="v-num">' + (i+1) + '.</span><span class="v-text">' + esc(v) + '</span></div>';
-    }).join("");
-    vc.textContent = result.variants.length + " variant" + (result.variants.length !== 1 ? "s" : "");
-    cw.innerHTML = result.capped
-      ? '<div class="cap-warn">\u26a0 Capped at ' + MAX_VARIANTS + ' variants.</div>'
-      : "";
-  }
+function normalizeText() {
+  const raw = document.getElementById("input").value;
+  const parsed = parseInput(raw);
 
-  var wa = document.getElementById("warnArea");
-  var warnHtml = "";
+  document.getElementById("outputCard").style.display = "none";
+  document.getElementById("warnCard").style.display   = "none";
+  document.getElementById("copyBtn").style.display    = "none";
 
-  if (result.invalid) {
-    warnHtml += '<div class="warn-block invalid"><div class="warn-header">\u26a0 Invalid Input</div>'
-      + '<div class="warn-body">' + esc(result.invalidReason)
-      + '<br><br>If you believe this is wrong:<br>'
-      + '<a class="link" href="https://discord.com/channels/1145887707323699340/1360164828651716660" target="_blank">Discord #normalization-discussion</a>'
-      + ' or message <strong>no_where.ghost_002</strong></div></div>';
-  }
+  if (!parsed.valid) { showInvalid(parsed.reason); return; }
 
-  var unregKeys = Object.keys(result.unregs || {});
-  if (unregKeys.length > 0) {
-    var chars = unregKeys.map(function(c){ return '<span class="char-tag">' + esc(c) + '</span>'; }).join(" ");
-    warnHtml += '<div class="warn-block unreg"><div class="warn-header">\u26a0 Unregistered Characters</div>'
-      + '<div class="warn-body">The following characters have no normalization rule:<br>' + chars
-      + '<br><br>\u2192 <a class="link" href="https://discord.com/channels/1145887707323699340/1360164828651716660" target="_blank">Discord #normalization-discussion</a><br>'
-      + '\u2192 Message <strong>no_where.ghost_002</strong><br><br>'
-      + 'You can also add an override above to manually define the output for this whole word.</div></div>';
-  }
+  const result = parsed.prefix
+    ? normalizeTitleWord(parsed.prefix, parsed.word)
+    : normalizeWord(parsed.word);
 
-  wa.innerHTML = warnHtml;
+  showOutput(result);
 }
 
-function copyAll() {
-  var items = [];
-  var els = document.querySelectorAll(".v-text");
-  for (var i = 0; i < els.length; i++) items.push(els[i].textContent);
-  if (!items.length) return;
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(items.join("\n")).catch(function(){});
-  }
-  var btns = document.querySelectorAll("button");
-  for (var b = 0; b < btns.length; b++) {
-    if (btns[b].textContent === "Copy All") {
-      btns[b].textContent = "Copied!";
-      setTimeout(function(){ btns[b].textContent = "Copy All"; }, 1600);
-      break;
-    }
+function showInvalid(reason) {
+  const card = document.getElementById("warnCard");
+  card.className = "warn-card invalid";
+  card.style.display = "block";
+  document.getElementById("warnTitle").className = "warn-title error";
+  document.getElementById("unregChars").innerHTML = "";
+  document.getElementById("warnTitle").textContent = "Invalid input";
+
+  const msgs = {
+    empty: "No input provided.",
+    "multi-word": "Too many words after the title prefix. Only one word is allowed after a prefix like dr., mr., etc.",
+    "invalid-space": "Spaces are not allowed unless the word starts with a recognized title abbreviation (dr, ms, mr, mrs, st, rd, and, mt) followed by a period and a single word.",
+  };
+
+  document.getElementById("warnBody").innerHTML = `
+    <div style="margin-bottom:10px">${msgs[reason] || "Unknown error."}</div>
+    <div>If you believe this is wrong, discuss it here:</div>
+    <div>→ <a href="${DISCORD_LINK}" target="_blank">Discord normalization channel</a></div>
+    <div>→ Message <strong style="color:var(--accent2)">${DISCORD_USER}</strong></div>
+  `;
+}
+
+function showOutput(result) {
+  const { variants, customVariants, unregChars, capped } = result;
+  const customSet = new Set(customVariants || []);
+
+  const card = document.getElementById("outputCard");
+  card.style.display = "block";
+  document.getElementById("variantPill").textContent =
+    variants.length === 1 ? "1 variant" : `${variants.length} variants`;
+
+  let html = "";
+  variants.forEach((v, idx) => {
+    const isCustom = customSet.has(v) || (result.prefix && customSet.has(v.replace(result.prefix + "-", "")));
+    const isEmpty  = !v;
+    html += `<div class="variant-row">
+      <span class="v-num">${idx + 1}</span>
+      <span class="v-text${isCustom ? " custom" : isEmpty ? " omit" : ""}">
+        ${isEmpty ? "(punctuation omitted)" : v}
+      </span>
+      ${isCustom ? '<span class="v-badge">custom</span>' : ""}
+    </div>`;
+  });
+
+  document.getElementById("outputBody").innerHTML = html;
+
+  const capEl = document.getElementById("capWarn");
+  capEl.style.display = capped ? "block" : "none";
+  if (capped) capEl.textContent = `⚠ Variant count capped at ${MAX_VARIANTS}.`;
+
+  if (variants.length > 0) document.getElementById("copyBtn").style.display = "inline-block";
+
+  if (unregChars.length > 0) {
+    const warnCard = document.getElementById("warnCard");
+    warnCard.className = "warn-card";
+    warnCard.style.display = "block";
+    document.getElementById("warnTitle").className = "warn-title";
+    document.getElementById("warnTitle").textContent = "Unregistered characters";
+    document.getElementById("unregChars").innerHTML =
+      unregChars.map(c => `<span class="unreg-chip">${c}</span>`).join("");
+    document.getElementById("warnBody").innerHTML = `
+      These characters have no normalization rule and were skipped in the output.<br>
+      To suggest a rule:<br>
+      → <a href="${DISCORD_LINK}" target="_blank">Discord normalization channel</a><br>
+      → Message <strong style="color:var(--accent2)">${DISCORD_USER}</strong>
+    `;
   }
 }
 
-function clearInput() {
+// ═══════════════════════════════════════════════════════════
+//  UI HELPERS
+// ═══════════════════════════════════════════════════════════
+
+function copyOutput() {
+  const els = [...document.querySelectorAll(".v-text:not(.omit)")];
+  const text = els.map(el => el.textContent.trim()).filter(Boolean).join("\n");
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById("copyBtn");
+    btn.textContent = "Copied!";
+    setTimeout(() => btn.textContent = "Copy all", 1500);
+  });
+}
+
+function clearAll() {
   document.getElementById("input").value = "";
-  document.getElementById("mainOut").style.display = "none";
-  updateMeta();
+  document.getElementById("outputCard").style.display = "none";
+  document.getElementById("warnCard").style.display   = "none";
+  document.getElementById("copyBtn").style.display    = "none";
+  updateCount();
 }
 
-function updateMeta() {
-  var v = document.getElementById("input").value;
-  document.getElementById("charCount").textContent = v.length ? v.length + " chars" : "";
-  var spaces = (v.match(/ /g) || []).length;
-  document.getElementById("spaceNote").textContent = spaces > 0
-    ? spaces + " space" + (spaces > 1 ? "s" : "") + " detected" : "";
+function updateCount() {
+  const len = document.getElementById("input").value.length;
+  document.getElementById("charCount").textContent = `${len} char${len !== 1 ? "s" : ""}`;
 }
 
-function togglePanel() {
-  var el = document.getElementById("overPanel");
-  var arrow = document.getElementById("panelArrow");
-  var open = el.classList.toggle("open");
-  arrow.textContent = open ? "\u25bc" : "\u25b6";
+function toggleInfo() {
+  const body  = document.getElementById("infoBody");
+  const arrow = document.getElementById("infoArrow");
+  const open  = body.classList.toggle("open");
+  arrow.textContent = open ? "▼" : "▶";
 }
 
-document.getElementById("input").addEventListener("input", updateMeta);
-document.getElementById("input").addEventListener("keydown", function(e) {
-  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); run(); }
+document.getElementById("input").addEventListener("input", updateCount);
+document.getElementById("input").addEventListener("keydown", e => {
+  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); normalizeText(); }
 });
+document.getElementById("normalizeBtn").addEventListener("click", normalizeText);
+document.getElementById("clearBtn").addEventListener("click", clearAll);
+document.getElementById("copyBtn").addEventListener("click", copyOutput);
 
-document.getElementById("abbrList").innerHTML = TITLE_ABBRS.map(function(a) {
-  return '<span class="abbr-tag">' + a + '.</span>';
-}).join("");
-
-renderOverrides();
-updateMeta();
+renderCustom();
+updateCount();
 </script>
 </body>
 </html>
