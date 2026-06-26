@@ -18,7 +18,7 @@
     --warn:      #f97316;
     --error:     #ef4444;
     --ok:        #4ade80;
-    --custom:    #f0c060;
+    --ok2:       #a3e635;
     --text:      #d4d4e8;
     --muted:     #5a5a7a;
     --mono:      'Courier New', monospace;
@@ -39,108 +39,41 @@
   h1 { font-size: 1.75rem; font-weight: 700; color: var(--accent); letter-spacing: -0.01em; line-height: 1.1; }
   .tagline { font-size: 11px; color: var(--muted); margin-top: 5px; letter-spacing: 0.05em; }
 
-  .input-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px;
-    margin-bottom: 12px;
-  }
-  .card-label {
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .card-label .pill {
-    background: var(--surface2);
-    border: 1px solid var(--border2);
-    border-radius: 20px;
-    padding: 1px 8px;
-    font-size: 10px;
-    color: var(--muted);
-  }
-
+  .input-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+  .input-label { font-size: 10px; letter-spacing: 0.18em; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; display: block; }
   textarea {
-    width: 100%;
-    min-height: 80px;
-    font-family: var(--mono);
-    font-size: 15px;
-    padding: 10px 12px;
-    background: var(--bg);
-    color: var(--text);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    resize: vertical;
-    outline: none;
-    transition: border-color 0.15s;
-    line-height: 1.5;
+    width: 100%; min-height: 80px; font-family: var(--mono); font-size: 15px;
+    padding: 10px 12px; background: var(--bg); color: var(--text);
+    border: 1px solid var(--border); border-radius: 6px; resize: vertical;
+    outline: none; transition: border-color 0.15s; line-height: 1.5;
   }
   textarea:focus { border-color: var(--accent); }
 
   .btn-row { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; align-items: center; }
   button {
-    font-family: var(--mono);
-    font-size: 12px;
-    letter-spacing: 0.06em;
-    padding: 8px 18px;
-    border-radius: 5px;
-    border: 1px solid var(--border2);
-    background: var(--surface2);
-    color: var(--text);
-    cursor: pointer;
-    transition: all 0.12s;
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em;
+    padding: 8px 18px; border-radius: 5px; border: 1px solid var(--border2);
+    background: var(--surface2); color: var(--text); cursor: pointer; transition: all 0.12s;
   }
   button:hover { border-color: var(--accent); color: var(--accent); }
   button.primary { background: #0d1f35; border-color: var(--accent); color: var(--accent); }
   button.primary:hover { background: #122840; }
   .char-count { font-size: 11px; color: var(--muted); margin-left: auto; }
 
-  .output-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px;
-    margin-bottom: 12px;
-    display: none;
-  }
+  .output-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 12px; display: none; }
+  .card-label { font-size: 10px; letter-spacing: 0.18em; color: var(--muted); text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .pill { background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; padding: 1px 8px; font-size: 10px; color: var(--muted); }
 
-  .variant-row {
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-    padding: 7px 0;
-    border-bottom: 1px solid var(--surface2);
-  }
+  .variant-row { display: flex; align-items: baseline; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--surface2); }
   .variant-row:last-child { border-bottom: none; }
   .v-num { font-size: 10px; color: var(--muted); min-width: 20px; }
   .v-text { font-size: 16px; font-weight: 700; color: var(--ok); letter-spacing: 0.02em; word-break: break-all; }
-  .v-text.custom { color: var(--custom); }
+  .v-text.added { color: var(--ok2); }
   .v-text.omit { color: var(--muted); font-weight: 400; font-style: italic; font-size: 13px; }
-  .v-badge {
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    background: #2a2010;
-    border: 1px solid #6a5010;
-    color: var(--custom);
-    border-radius: 3px;
-    padding: 1px 6px;
-    margin-left: 4px;
-  }
+  .v-tag { font-size: 10px; color: var(--muted); border: 1px solid var(--border2); border-radius: 3px; padding: 1px 6px; margin-left: 4px; }
+  .v-tag.custom { color: var(--ok2); border-color: var(--ok2); opacity: 0.6; }
 
-  .warn-card {
-    background: #1a100a;
-    border: 1px solid #5a2a0a;
-    border-radius: 10px;
-    padding: 16px;
-    margin-bottom: 12px;
-    display: none;
-  }
+  .warn-card { background: #1a100a; border: 1px solid #5a2a0a; border-radius: 10px; padding: 16px; margin-bottom: 12px; display: none; }
   .warn-card.invalid { background: #1a0a0a; border-color: #7a1010; }
   .warn-title { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--warn); margin-bottom: 10px; }
   .warn-title.error { color: var(--error); }
@@ -150,56 +83,21 @@
   .warn-body a { color: var(--accent); text-decoration: none; }
   .warn-body a:hover { text-decoration: underline; }
 
-  .custom-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px;
-    margin-bottom: 12px;
+  .override-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+  .override-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+  .override-row input {
+    font-family: var(--mono); font-size: 13px; padding: 7px 10px;
+    background: var(--bg); color: var(--text); border: 1px solid var(--border);
+    border-radius: 5px; outline: none; flex: 1; min-width: 120px; transition: border-color 0.15s;
   }
-  .custom-hint {
-    font-size: 11px;
-    color: var(--muted);
-    margin-bottom: 10px;
-    line-height: 1.7;
-  }
-  .custom-hint strong { color: var(--custom); }
-  .custom-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
-  .custom-row input {
-    font-family: var(--mono);
-    font-size: 13px;
-    padding: 7px 10px;
-    background: var(--bg);
-    color: var(--text);
-    border: 1px solid var(--border);
-    border-radius: 5px;
-    outline: none;
-    flex: 1;
-    min-width: 120px;
-    transition: border-color 0.15s;
-  }
-  .custom-row input:focus { border-color: var(--custom); }
-  .custom-tags { display: flex; flex-wrap: wrap; gap: 6px; min-height: 24px; }
-  .c-tag {
-    background: var(--surface2);
-    border: 1px solid var(--border2);
-    border-radius: 4px;
-    padding: 2px 8px;
-    font-size: 11px;
-    color: var(--muted);
-    cursor: pointer;
-    transition: all 0.12s;
-  }
-  .c-tag:hover { border-color: var(--error); color: var(--error); }
+  .override-row input:focus { border-color: var(--accent2); }
+  .override-hint { font-size: 11px; color: var(--muted); margin-bottom: 10px; line-height: 1.6; }
+  .override-tags { display: flex; flex-wrap: wrap; gap: 6px; min-height: 24px; }
+  .o-tag { background: var(--surface2); border: 1px solid var(--border2); border-radius: 4px; padding: 2px 8px; font-size: 11px; color: var(--muted); cursor: pointer; transition: all 0.12s; }
+  .o-tag:hover { border-color: var(--error); color: var(--error); }
 
   .info-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 12px; }
-  .info-toggle {
-    width: 100%; text-align: left; padding: 12px 16px;
-    font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em;
-    text-transform: uppercase; color: var(--muted); background: none;
-    border: none; border-radius: 0; cursor: pointer;
-    display: flex; align-items: center; justify-content: space-between;
-  }
+  .info-toggle { width: 100%; text-align: left; padding: 12px 16px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); background: none; border: none; border-radius: 0; cursor: pointer; display: flex; align-items: center; justify-content: space-between; }
   .info-toggle:hover { color: var(--accent); border-color: transparent; }
   .info-body { display: none; padding: 0 16px 16px; font-size: 12px; color: #888; line-height: 1.9; border-top: 1px solid var(--border); }
   .info-body.open { display: block; }
@@ -220,7 +118,7 @@
   </header>
 
   <div class="input-card">
-    <div class="card-label">Word to normalize</div>
+    <span class="input-label">Word to normalize</span>
     <textarea id="input" placeholder="Type a word or phrase with a title prefix (e.g. dr. White)…" spellcheck="false"></textarea>
     <div class="btn-row">
       <button class="primary" id="normalizeBtn">Normalize</button>
@@ -245,19 +143,18 @@
     <div class="warn-body" id="warnBody"></div>
   </div>
 
-  <div class="custom-card">
-    <div class="card-label">Extra variants</div>
-    <div class="custom-hint">
-      Add <strong>additional normalizations</strong> for a specific word.<br>
-      These are shown alongside the auto-generated variants, not instead of them.<br>
-      Example: <strong>007</strong> already normalizes to <em>zero-zero-seven</em> — adding <strong>double-o-seven</strong> shows both.
+  <div class="override-card">
+    <div class="card-label">Additional normalizations</div>
+    <div class="override-hint">
+      Add extra accepted variants for a specific word. The standard normalization always runs — this adds <em>on top</em> of it.<br>
+      Example: <span style="color:var(--ok2)">007</span> → <span style="color:var(--ok2)">double-o-seven</span> will show alongside the auto-generated <span style="color:var(--ok)">zero-zero-seven</span>.
     </div>
-    <div class="custom-row">
-      <input id="customKey" placeholder="Word (e.g. 007)" />
-      <input id="customVal" placeholder="Extra variant (e.g. double-o-seven)" />
-      <button onclick="addCustom()">Add</button>
+    <div class="override-row">
+      <input id="overKey" placeholder="Word (e.g. 007)" />
+      <input id="overVal" placeholder="Extra variant (e.g. double-o-seven)" />
+      <button onclick="addOverride()">Add</button>
     </div>
-    <div class="custom-tags" id="customTags"></div>
+    <div class="override-tags" id="overrideTags"></div>
   </div>
 
   <div class="info-card">
@@ -266,7 +163,7 @@
       <span id="infoArrow">▶</span>
     </button>
     <div class="info-body" id="infoBody">
-      <p style="margin-top:12px">All output must only contain <strong style="color:var(--accent)">a–z</strong>, <strong style="color:var(--accent)">-</strong> (hyphen), and <strong style="color:var(--accent)">'</strong> (apostrophe). Words cannot start or end with a hyphen.</p>
+      <p>All output must only contain <strong style="color:var(--accent)">a–z</strong>, <strong style="color:var(--accent)">-</strong> (hyphen), and <strong style="color:var(--accent)">'</strong> (apostrophe). Words cannot start or end with a hyphen.</p>
       <br>
       <p><strong style="color:var(--text)">Title abbreviations</strong> — absorb a following period and space:</p>
       <div class="abbr-list">
@@ -275,20 +172,21 @@
         <span class="abbr-chip">and</span><span class="abbr-chip">mt</span>
       </div>
       <p><strong style="color:var(--text)">Punctuation quick reference:</strong></p>
-      <p style="margin-top:6px">
-        <code style="color:var(--accent2)">/  \</code> → hyphen (merges with adjacent -) &nbsp;·&nbsp;
-        <code style="color:var(--accent2)">~  _</code> → hyphen (no merge, ignored at edges) &nbsp;·&nbsp;
-        <code style="color:var(--accent2)">.</code> → hyphen (any count = 1) &nbsp;·&nbsp;
-        <code style="color:var(--accent2)">,</code> → hyphen (ignored at edges) &nbsp;·&nbsp;
-        <code style="color:var(--accent2)">:</code> → hyphen (:: = colon-colon, ::: = colon-colon-colon) &nbsp;·&nbsp;
-        <code style="color:var(--accent2)">;</code> → hyphen (;; = semicolon / semi-colon variants) &nbsp;·&nbsp;
-        <code style="color:var(--accent2)">+</code> → plus (each + = own segment) &nbsp;·&nbsp;
-        <code style="color:var(--accent2)">() [] {}</code> → paired = hyphen, unpaired = parenthesis / bracket / curly-bracket &nbsp;·&nbsp;
-        <code style="color:var(--accent2)">!</code> → exclamation-mark / exclamation-point / omit &nbsp;·&nbsp;
-        <code style="color:var(--accent2)">?</code> → question-mark / omit
+      <p>
+        / \ → hyphen (merges with adjacent -) &nbsp;·&nbsp;
+        ~ _ → hyphen (no merge, ignored at start/end) &nbsp;·&nbsp;
+        . → hyphen (any count = 1, ignored at start/end) &nbsp;·&nbsp;
+        , → hyphen (any count = 1, ignored at start/end) &nbsp;·&nbsp;
+        : → hyphen (:: = colon-colon, ::: = colon-colon-colon) &nbsp;·&nbsp;
+        ; → hyphen (;; = semicolon/semi-colon variants) &nbsp;·&nbsp;
+        + → plus segment (each + is its own plus) &nbsp;·&nbsp;
+        () [] {} → paired = hyphen, unpaired = parenthesis/bracket/curly-bracket &nbsp;·&nbsp;
+        ! → exclamation-mark / exclamation-point / omit &nbsp;·&nbsp;
+        ? → question-mark / omit &nbsp;·&nbsp;
+        apostrophe before a generated hyphen → hyphen removed
       </p>
       <br>
-      <p><strong style="color:var(--text)">Missing a rule? Suggest it:</strong></p>
+      <p><strong style="color:var(--text)">Missing a rule or character? Suggest it:</strong></p>
       <p>→ <a href="https://discord.com/channels/1145887707323699340/1360164828651716660" target="_blank">Discord normalization channel</a></p>
       <p>→ Message <strong style="color:var(--accent2)">no_where.ghost_002</strong> on Discord</p>
     </div>
@@ -313,49 +211,50 @@ const ones = [
 const tensW = ["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
 
 // ═══════════════════════════════════════════════════════════
-//  STORAGE — custom additions (not replacements)
+//  STORAGE  —  overrides are NOW "additional variants", not replacements
 // ═══════════════════════════════════════════════════════════
 
-function getCustom() {
-  try { return JSON.parse(localStorage.getItem("sn_custom") || "{}"); } catch { return {}; }
+// Structure: { "007": ["double-o-seven"], "word": ["extra1","extra2"] }
+function getOverrides() {
+  try { return JSON.parse(localStorage.getItem("sn_overrides2") || "{}"); } catch { return {}; }
 }
-function setCustom(o) { localStorage.setItem("sn_custom", JSON.stringify(o)); }
+function setOverrides(o) { localStorage.setItem("sn_overrides2", JSON.stringify(o)); }
 
-function addCustom() {
-  const k = document.getElementById("customKey").value.trim();
-  const v = document.getElementById("customVal").value.trim();
+function addOverride() {
+  const k = document.getElementById("overKey").value.trim();
+  const v = document.getElementById("overVal").value.trim();
   if (!k || !v) return;
-  const o = getCustom();
+  const o = getOverrides();
   if (!o[k]) o[k] = [];
   if (!o[k].includes(v)) o[k].push(v);
-  setCustom(o);
-  document.getElementById("customKey").value = "";
-  document.getElementById("customVal").value = "";
-  renderCustom();
+  setOverrides(o);
+  document.getElementById("overKey").value = "";
+  document.getElementById("overVal").value = "";
+  renderOverrides();
 }
-function removeCustomEntry(word, variant) {
-  const o = getCustom();
-  if (!o[word]) return;
-  o[word] = o[word].filter(v => v !== variant);
-  if (o[word].length === 0) delete o[word];
-  setCustom(o);
-  renderCustom();
+
+function removeOverride(k, v) {
+  const o = getOverrides();
+  if (!o[k]) return;
+  o[k] = o[k].filter(x => x !== v);
+  if (o[k].length === 0) delete o[k];
+  setOverrides(o);
+  renderOverrides();
 }
-function renderCustom() {
-  const o = getCustom();
-  const el = document.getElementById("customTags");
+
+function renderOverrides() {
+  const o = getOverrides();
+  const el = document.getElementById("overrideTags");
   const keys = Object.keys(o);
   if (!keys.length) {
     el.innerHTML = '<span style="font-size:11px;color:var(--muted)">No extra variants added</span>';
     return;
   }
   let html = "";
-  for (const word of keys) {
-    for (const variant of o[word]) {
-      html += `<span class="c-tag" title="Click to remove"
-        onclick="removeCustomEntry(${JSON.stringify(word)}, ${JSON.stringify(variant)})">
-        ${word} + ${variant} ✕
-      </span>`;
+  for (const k of keys) {
+    for (const v of o[k]) {
+      html += `<span class="o-tag" title="Click to remove"
+        onclick="removeOverride(${JSON.stringify(k)},${JSON.stringify(v)})">${k} + ${v} ✕</span>`;
     }
   }
   el.innerHTML = html;
@@ -374,10 +273,8 @@ function digitToWord(d) { return ones[parseInt(d, 10)]; }
 function parseInput(raw) {
   const trimmed = raw.trim();
   if (!trimmed) return { valid: false, reason: "empty" };
-
   const spaceIdx = trimmed.indexOf(" ");
   if (spaceIdx === -1) return { valid: true, prefix: null, word: trimmed };
-
   const before = trimmed.slice(0, spaceIdx).toLowerCase().replace(/\.$/, "");
   if (TITLE_ABBRS.includes(before)) {
     const after = trimmed.slice(spaceIdx + 1).trim();
@@ -388,18 +285,14 @@ function parseInput(raw) {
 }
 
 // ═══════════════════════════════════════════════════════════
-//  DIACRITICS
+//  DIACRITICS + CHAR CLASSIFICATION
 // ═══════════════════════════════════════════════════════════
 
-function stripDiacritics(s) {
-  return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-}
+function stripDiacritics(s) { return s.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); }
+function isLetter(c) { return /^[a-z]$/.test(c); }
+function isDigit(c)  { return /^[0-9]$/.test(c); }
 
-// ═══════════════════════════════════════════════════════════
-//  KNOWN PUNCT SET
-// ═══════════════════════════════════════════════════════════
-
-const KNOWN_PUNCT = new Set(['(',')','{','}','[',']','/','\\','~','_','.',',',':',';','+','!','?',"'",'`','^','-']);
+const KNOWN_PUNCT = new Set(['(',')','{','}','[',']','/','\\','~','_','.',',',':',';','+','!','?',"'",'-','^']);
 
 // ═══════════════════════════════════════════════════════════
 //  TOKENIZER
@@ -411,42 +304,21 @@ function tokenize(raw) {
   let i = 0;
   while (i < s.length) {
     const c = s[i];
-
-    // Digit run
-    if (/[0-9]/.test(c)) {
+    if (isDigit(c)) {
       let run = "";
-      while (i < s.length && /[0-9]/.test(s[i])) { run += s[i]; i++; }
+      while (i < s.length && isDigit(s[i])) { run += s[i]; i++; }
       tokens.push({ t: "digit-run", v: run });
       continue;
     }
-
-    // Letter
-    if (/[a-z]/.test(c)) {
-      tokens.push({ t: "letter", v: c });
-      i++; continue;
-    }
-
-    // Apostrophe
-    if (c === "'") {
-      tokens.push({ t: "apostrophe", v: "'" });
-      i++; continue;
-    }
-
-    // Explicit hyphen
-    if (c === "-") {
-      tokens.push({ t: "explicit-hyphen", v: "-" });
-      i++; continue;
-    }
-
-    // Known punct — collect run of same char
+    if (isLetter(c)) { tokens.push({ t: "letter", v: c }); i++; continue; }
+    if (c === "-")   { tokens.push({ t: "hyphen", v: "-" }); i++; continue; }
+    if (c === "'")   { tokens.push({ t: "apostrophe", v: "'" }); i++; continue; }
     if (KNOWN_PUNCT.has(c)) {
       let run = "";
       while (i < s.length && s[i] === c) { run += c; i++; }
       tokens.push({ t: "punct", ch: c, count: run.length, v: run });
       continue;
     }
-
-    // Unknown
     tokens.push({ t: "unknown", v: c });
     i++;
   }
@@ -459,30 +331,27 @@ function tokenize(raw) {
 
 const OPEN_CLOSE = { "(": ")", "[": "]", "{": "}" };
 const CLOSE_OPEN = { ")": "(", "]": "[", "}": "{" };
-const BNAMES     = {
+const BNAMES = {
   "(": "parenthesis", ")": "parenthesis",
   "[": "bracket",     "]": "bracket",
   "{": "curly-bracket", "}": "curly-bracket"
 };
 
 function labelBrackets(tokens) {
-  const result = tokens.map(tk => ({ ...tk, paired: false, pairIdx: -1 }));
-  const stacks = { "(": [], "[": "{": [] };
-  // reset properly
-  const stk = { "(": [], "[": [], "{": [] };
-
+  const result = tokens.map((tk, idx) => ({ ...tk, idx, paired: false, pairIdx: -1 }));
+  const stack = { "(": [], "[": [], "{": [] };
   for (let i = 0; i < result.length; i++) {
     const tk = result[i];
     if (tk.t !== "punct") continue;
     const ch = tk.ch;
     if (ch in OPEN_CLOSE) {
-      stk[ch].push(i);
+      stack[ch].push(i);
     } else if (ch in CLOSE_OPEN) {
       const opener = CLOSE_OPEN[ch];
-      if (stk[opener] && stk[opener].length > 0) {
-        const oi = stk[opener].pop();
+      if (stack[opener] && stack[opener].length > 0) {
+        const oi = stack[opener].pop();
         result[oi].paired = true; result[oi].pairIdx = i;
-        result[i].paired  = true; result[i].pairIdx  = oi;
+        result[i].paired  = true; result[i].pairIdx = oi;
       }
     }
   }
@@ -491,164 +360,124 @@ function labelBrackets(tokens) {
 
 // ═══════════════════════════════════════════════════════════
 //  SEGMENT BUILDER
-//  Each segment: { alts: string[], isH: bool, isMerging: bool }
-//  isH = this position produces a hyphen
-//  isMerging = stacks with adjacent explicit hyphens (/ and \)
+//  Each segment: { alts: (string|{unreg})[], isH: bool, isMerg: bool }
 // ═══════════════════════════════════════════════════════════
 
 function buildSegments(tokens) {
   const segs = [];
-  const n = tokens.length;
+  const push = (alts, isH=false, isMerg=false) => segs.push({ alts, isH, isMerg });
 
-  const push = (alts, isH=false, isMerging=false) =>
-    segs.push({ alts: Array.isArray(alts) ? alts : [alts], isH, isMerging });
+  const n = tokens.length;
 
   for (let i = 0; i < n; i++) {
     const tk = tokens[i];
     const atStart = i === 0;
     const atEnd   = i === n - 1;
 
-    switch (tk.t) {
-      case "letter":
-        push([tk.v]);
-        break;
+    if (tk.t === "letter")     { push([tk.v]); continue; }
+    if (tk.t === "apostrophe") { push(["'"]); continue; }
+    if (tk.t === "unknown")    { push([{ unreg: tk.v }]); continue; }
 
-      case "apostrophe":
-        push(["'"]);
-        break;
+    if (tk.t === "hyphen") { push(["-"], true, false); continue; }
 
-      case "explicit-hyphen":
-        push(["-"], true, false);
-        break;
-
-      case "unknown":
-        push([{ unreg: tk.v }]);
-        break;
-
-      case "digit-run": {
-        // Each digit becomes its own word, separated by hyphens
-        const digits = tk.v.split("");
-        for (let d = 0; d < digits.length; d++) {
-          if (d > 0) push([""], true, false);
-          push([digitToWord(digits[d])]);
-        }
-        break;
+    if (tk.t === "digit-run") {
+      // Each digit becomes its own word, separated by generated hyphens
+      for (let d = 0; d < tk.v.length; d++) {
+        if (d > 0) push([""], true, false);
+        push([digitToWord(tk.v[d])]);
       }
-
-      case "punct": {
-        const ch = tk.ch;
-        const count = tk.count;
-
-        // ── Slash / Backslash — merging hyphens ──
-        if (ch === "/" || ch === "\\") {
-          if (atStart) break; // ignored at word start
-          push([""], true, true); // merging hyphen
-          break;
-        }
-
-        // ── Tilde / Underscore — non-merging, ignored at edges ──
-        if (ch === "~" || ch === "_") {
-          if (atStart || atEnd) break;
-          push([""], true, false);
-          break;
-        }
-
-        // ── Period — any count = 1 hyphen, ignored at edges ──
-        if (ch === ".") {
-          if (atStart || atEnd) break;
-          push([""], true, false);
-          break;
-        }
-
-        // ── Comma — 1 hyphen regardless of count, ignored at edges ──
-        if (ch === ",") {
-          if (atStart || atEnd) break;
-          push([""], true, false);
-          break;
-        }
-
-        // ── Colon ──
-        if (ch === ":") {
-          if (count >= 3) push(["colon-colon-colon"]);
-          else if (count === 2) push(["colon-colon"]);
-          else push([""], true, false); // single = hyphen
-          break;
-        }
-
-        // ── Semicolon ──
-        if (ch === ";") {
-          if (count >= 2) {
-            const v1 = Array(count).fill("semicolon").join("-");
-            const v2 = Array(count).fill("semi-colon").join("-");
-            push([v1, v2]); // branching variant
-          } else {
-            push([""], true, false); // single = hyphen
-          }
-          break;
-        }
-
-        // ── Plus — each + is its own "plus" segment ──
-        if (ch === "+") {
-          for (let p = 0; p < count; p++) {
-            if (p > 0) push([""], true, false);
-            push(["plus"]);
-          }
-          break;
-        }
-
-        // ── Opening brackets ──
-        if (ch === "(" || ch === "[" || ch === "{") {
-          const name = BNAMES[ch];
-          if (tk.paired) {
-            // Paired: at word start = nothing, otherwise = 1 hyphen
-            if (atStart) break;
-            push([""], true, false);
-          } else {
-            // Unpaired openers at word start = nothing
-            if (atStart) break;
-            for (let p = 0; p < count; p++) {
-              if (p > 0) push([""], true, false);
-              push([name]);
-            }
-          }
-          break;
-        }
-
-        // ── Closing brackets ──
-        if (ch === ")" || ch === "]" || ch === "}") {
-          const name = BNAMES[ch];
-          if (tk.paired) {
-            // Paired: at word end = nothing, otherwise = 1 hyphen
-            if (atEnd) break;
-            push([""], true, false);
-          } else {
-            // Unpaired closers at word end = nothing
-            if (atEnd) break;
-            for (let p = 0; p < count; p++) {
-              if (p > 0) push([""], true, false);
-              push([name]);
-            }
-          }
-          break;
-        }
-
-        // ── Exclamation mark ──
-        if (ch === "!") {
-          push(["exclamation-mark", "exclamation-point", ""]);
-          break;
-        }
-
-        // ── Question mark ──
-        if (ch === "?") {
-          push(["question-mark", ""]);
-          break;
-        }
-
-        // ── Anything else unregistered ──
-        push([{ unreg: ch }]);
-        break;
-      }
+      continue;
     }
+
+    if (tk.t !== "punct") continue;
+    const ch = tk.ch;
+    const count = tk.count;
+
+    // ── / and \ (merging hyphens) ──
+    if (ch === "/" || ch === "\\") {
+      if (atStart) continue; // ignored at word start
+      push([""], true, true); // merging
+      continue;
+    }
+
+    // ── ~ and _ (non-merging hyphens) ──
+    if (ch === "~" || ch === "_") {
+      if (atStart || atEnd) continue;
+      push([""], true, false);
+      continue;
+    }
+
+    // ── Period ──
+    if (ch === ".") {
+      if (atStart || atEnd) continue;
+      push([""], true, false);
+      continue;
+    }
+
+    // ── Comma ──
+    if (ch === ",") {
+      if (atStart || atEnd) continue;
+      push([""], true, false);
+      continue;
+    }
+
+    // ── Colon ──
+    if (ch === ":") {
+      if (count >= 3) push(["colon-colon-colon"]);
+      else if (count === 2) push(["colon-colon"]);
+      else push([""], true, false);
+      continue;
+    }
+
+    // ── Semicolon ──
+    if (ch === ";") {
+      if (count >= 2) {
+        const v1 = Array(count).fill("semicolon").join("-");
+        const v2 = Array(count).fill("semi-colon").join("-");
+        push([v1, v2]);
+      } else {
+        push([""], true, false);
+      }
+      continue;
+    }
+
+    // ── Plus ──
+    if (ch === "+") {
+      for (let p = 0; p < count; p++) {
+        if (p > 0) push([""], true, false);
+        push(["plus"]);
+      }
+      continue;
+    }
+
+    // ── Parentheses / Brackets / Curlies ──
+    if ("([{)]}".includes(ch)) {
+      const isOpener = ch in OPEN_CLOSE;
+      const name = BNAMES[ch];
+      if (tk.paired) {
+        // Paired: whole group = 1 hyphen, ignored at edges
+        if (atStart || atEnd) continue;
+        push([""], true, false);
+      } else {
+        // Unpaired: each char = its own name token
+        if (atStart && isOpener) continue;
+        if (atEnd   && !isOpener) continue;
+        for (let p = 0; p < count; p++) {
+          if (p > 0) push([""], true, false);
+          push([name]);
+        }
+      }
+      continue;
+    }
+
+    // ── ! ──
+    if (ch === "!") { push(["exclamation-mark","exclamation-point",""]); continue; }
+
+    // ── ? ──
+    if (ch === "?") { push(["question-mark",""]); continue; }
+
+    // ── Everything else (unreg) ──
+    push([{ unreg: ch }]);
   }
 
   return segs;
@@ -658,12 +487,12 @@ function buildSegments(tokens) {
 //  CARTESIAN PRODUCT
 // ═══════════════════════════════════════════════════════════
 
-function cartesian(arrays) {
+function cartesian(segAlts) {
   let results = [[]];
-  for (const arr of arrays) {
+  for (const alts of segAlts) {
     const next = [];
     for (const existing of results) {
-      for (const item of arr) next.push([...existing, item]);
+      for (const alt of alts) { next.push([...existing, alt]); }
     }
     results = next;
     if (results.length > MAX_VARIANTS) { results = results.slice(0, MAX_VARIANTS); break; }
@@ -672,96 +501,98 @@ function cartesian(arrays) {
 }
 
 // ═══════════════════════════════════════════════════════════
-//  VARIANT ASSEMBLY
+//  HYPHEN MERGING + STRING ASSEMBLY
+// ═══════════════════════════════════════════════════════════
+
+function assembleCombo(combo, segs) {
+  // Build array of { val, isGenH, isMerg }
+  const parts = combo.map((val, i) => ({
+    val,
+    isGenH: segs[i].isH && val === "",
+    isMerg: segs[i].isMerg || false,
+    isExplicitHyphen: segs[i].isH && val === "-",
+  }));
+
+  // Merge adjacent hyphen-producing segments into final hyphen strings
+  let str = "";
+  let i = 0;
+  while (i < parts.length) {
+    const p = parts[i];
+
+    // Not a hyphen segment — just append
+    if (!p.isGenH && !p.isExplicitHyphen) {
+      str += p.val;
+      i++;
+      continue;
+    }
+
+    // Collect a run of hyphen-producing parts
+    let j = i;
+    let explicitHyphens = 0; // count of literal "-" from input
+    let mergingCount    = 0; // count of merging segments (/ \)
+    let hasNormalGenH   = false; // non-merging generated hyphen present
+
+    while (j < parts.length && (parts[j].isGenH || parts[j].isExplicitHyphen)) {
+      if (parts[j].isExplicitHyphen) explicitHyphens++;
+      else if (parts[j].isMerg)      mergingCount++;
+      else                           hasNormalGenH = true;
+      j++;
+    }
+
+    // Also absorb any explicit "-" chars that were already appended to str
+    while (str.endsWith("-")) {
+      str = str.slice(0, -1);
+      explicitHyphens++;
+    }
+
+    // Total hyphens:
+    // base = max(1 if any genH, 0) + explicitHyphens
+    // each merging group adds 1 on top of whatever explicit hyphens exist
+    let total = explicitHyphens + mergingCount + (hasNormalGenH ? 1 : 0);
+    if (total === 0) total = 1; // at least 1 if we're in this branch
+
+    str += "-".repeat(total);
+    i = j;
+  }
+
+  // Apostrophe rule: remove any hyphen immediately before an apostrophe
+  str = str.replace(/-'/g, "'");
+
+  // Strip leading/trailing hyphens
+  str = str.replace(/^-+/, "").replace(/-+$/, "");
+
+  return str;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  ASSEMBLE ALL VARIANTS
 // ═══════════════════════════════════════════════════════════
 
 function assembleVariants(segs) {
   const unregChars = new Set();
 
-  // Strip unreg objects, collect them
+  // Clean segs: extract unreg chars, replace with ""
   const cleanSegs = segs.map(seg => {
-    const alts = seg.alts.map(a => {
+    const cleanAlts = seg.alts.map(a => {
       if (typeof a === "object" && a.unreg) { unregChars.add(a.unreg); return ""; }
       return a;
     });
-    return { ...seg, alts: [...new Set(alts)] };
+    return { ...seg, alts: [...new Set(cleanAlts)] };
   });
 
-  const combos = cartesian(cleanSegs.map(s => s.alts));
-  const capped = combos.length >= MAX_VARIANTS;
+  const segAlts = cleanSegs.map(s => s.alts);
+  const combos  = cartesian(segAlts);
+  const capped  = combos.length >= MAX_VARIANTS;
 
-  const seen = new Set();
+  const seen     = new Set();
   const variants = [];
 
   for (const combo of combos) {
-    const str = assembleSingle(combo, cleanSegs);
-    if (str !== null && !seen.has(str)) {
-      seen.add(str);
-      variants.push(str);
-    }
+    const str = assembleCombo(combo, cleanSegs);
+    if (str.length > 0 && !seen.has(str)) { seen.add(str); variants.push(str); }
   }
 
   return { variants, unregChars: [...unregChars], capped };
-}
-
-function assembleSingle(combo, segs) {
-  // Step 1: build a raw list of pieces with metadata
-  // piece: { val: string, isH: bool, isMerging: bool }
-  const pieces = combo.map((val, i) => ({
-    val,
-    isH: segs[i].isH && val === "",
-    isMerging: segs[i].isMerging || false,
-    isExplicit: segs[i].alts[0] === "-" && segs[i].isH, // explicit hyphen token
-  }));
-
-  // Step 2: resolve hyphen runs
-  // Walk through pieces, collecting runs of hyphen-producing pieces (isH=true or explicit)
-  let out = "";
-  let i = 0;
-
-  while (i < pieces.length) {
-    const p = pieces[i];
-
-    if (!p.isH && p.val !== "-") {
-      // Normal content piece
-      // Check if it starts with apostrophe — eat a trailing generated hyphen from out
-      if (p.val.startsWith("'") && out.endsWith("-")) {
-        out = out.slice(0, -1);
-      }
-      out += p.val;
-      i++;
-      continue;
-    }
-
-    // This piece is hyphen-producing — collect the full contiguous run
-    let j = i;
-    let explicitCount = 0;
-    let mergingCount  = 0;
-    let hasNormal     = false;
-
-    while (j < pieces.length && (pieces[j].isH || pieces[j].val === "-")) {
-      if (pieces[j].isMerging) mergingCount++;
-      else if (pieces[j].val === "-") explicitCount++;
-      else hasNormal = true;
-      j++;
-    }
-
-    // Also absorb trailing explicit hyphens from already-built out
-    while (out.endsWith("-")) {
-      out = out.slice(0, -1);
-      explicitCount++;
-    }
-
-    const totalHyphens = explicitCount + mergingCount + (hasNormal || (!mergingCount && !explicitCount) ? 1 : 0);
-    out += "-".repeat(Math.max(totalHyphens, 1));
-    i = j;
-  }
-
-  // Step 3: strip leading/trailing hyphens
-  out = out.replace(/^-+/, "").replace(/-+$/, "");
-
-  // Return null for empty (don't add as variant unless it's the only option)
-  return out || null;
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -769,37 +600,26 @@ function assembleSingle(combo, segs) {
 // ═══════════════════════════════════════════════════════════
 
 function normalizeWord(raw) {
-  const tokens  = tokenize(raw);
+  const tokens = tokenize(raw);
   const labeled = labelBrackets(tokens);
   const segs    = buildSegments(labeled);
-  const result  = assembleVariants(segs);
+  const { variants, unregChars, capped } = assembleVariants(segs);
 
-  // Append any custom additions for this exact word
-  const custom = getCustom();
-  const extras = custom[raw] || [];
-  const allVariants = [...result.variants];
-  const customVariants = [];
-  for (const e of extras) {
-    if (!allVariants.includes(e)) {
-      allVariants.push(e);
-      customVariants.push(e);
-    }
-  }
+  // Append any user-added extra variants (do NOT replace)
+  const overrides = getOverrides();
+  const extras    = overrides[raw] || [];
+  const extraVariants = extras.filter(e => !variants.includes(e));
 
-  return { ...result, variants: allVariants, customVariants };
+  return { variants, extraVariants, unregChars, capped };
 }
 
-// ═══════════════════════════════════════════════════════════
-//  TITLE PREFIX HANDLING
-// ═══════════════════════════════════════════════════════════
-
 function normalizeTitleWord(prefix, wordRaw) {
-  const wordResult = normalizeWord(wordRaw);
+  const { variants, extraVariants, unregChars, capped } = normalizeWord(wordRaw);
   return {
-    variants: wordResult.variants.map(v => prefix + "-" + v),
-    customVariants: wordResult.customVariants.map(v => prefix + "-" + v),
-    unregChars: wordResult.unregChars,
-    capped: wordResult.capped,
+    variants:      variants.map(v => prefix + "-" + v),
+    extraVariants: extraVariants.map(v => prefix + "-" + v),
+    unregChars,
+    capped,
   };
 }
 
@@ -824,68 +644,74 @@ function normalizeText() {
   showOutput(result);
 }
 
+// ═══════════════════════════════════════════════════════════
+//  RENDER
+// ═══════════════════════════════════════════════════════════
+
 function showInvalid(reason) {
   const card = document.getElementById("warnCard");
   card.className = "warn-card invalid";
   card.style.display = "block";
-  document.getElementById("warnTitle").className = "warn-title error";
-  document.getElementById("unregChars").innerHTML = "";
+  document.getElementById("warnTitle").className   = "warn-title error";
   document.getElementById("warnTitle").textContent = "Invalid input";
-
+  document.getElementById("unregChars").innerHTML  = "";
   const msgs = {
-    empty: "No input provided.",
-    "multi-word": "Too many words after the title prefix. Only one word is allowed after a prefix like dr., mr., etc.",
+    empty:         "No input provided.",
+    "multi-word":  "Too many words after the title prefix. Only one word is allowed after a prefix like dr., mr., etc.",
     "invalid-space": "Spaces are not allowed unless the word starts with a recognized title abbreviation (dr, ms, mr, mrs, st, rd, and, mt) followed by a period and a single word.",
   };
-
   document.getElementById("warnBody").innerHTML = `
     <div style="margin-bottom:10px">${msgs[reason] || "Unknown error."}</div>
-    <div>If you believe this is wrong, discuss it here:</div>
-    <div>→ <a href="${DISCORD_LINK}" target="_blank">Discord normalization channel</a></div>
-    <div>→ Message <strong style="color:var(--accent2)">${DISCORD_USER}</strong></div>
+    If you believe this is wrong, discuss it here:<br>
+    → <a href="${DISCORD_LINK}" target="_blank">Discord normalization channel</a><br>
+    → Message <strong style="color:var(--accent2)">${DISCORD_USER}</strong>
   `;
 }
 
-function showOutput(result) {
-  const { variants, customVariants, unregChars, capped } = result;
-  const customSet = new Set(customVariants || []);
+function showOutput({ variants, extraVariants, unregChars, capped }) {
+  const all = [
+    ...variants.map(v => ({ v, custom: false })),
+    ...extraVariants.map(v => ({ v, custom: true })),
+  ];
 
   const card = document.getElementById("outputCard");
   card.style.display = "block";
   document.getElementById("variantPill").textContent =
-    variants.length === 1 ? "1 variant" : `${variants.length} variants`;
+    all.length === 1 ? "1 variant" : `${all.length} variants`;
 
   let html = "";
-  variants.forEach((v, idx) => {
-    const isCustom = customSet.has(v) || (result.prefix && customSet.has(v.replace(result.prefix + "-", "")));
-    const isEmpty  = !v;
+  all.forEach(({ v, custom }, i) => {
+    const empty = !v;
     html += `<div class="variant-row">
-      <span class="v-num">${idx + 1}</span>
-      <span class="v-text${isCustom ? " custom" : isEmpty ? " omit" : ""}">
-        ${isEmpty ? "(punctuation omitted)" : v}
+      <span class="v-num">${i + 1}</span>
+      <span class="v-text${empty ? " omit" : custom ? " added" : ""}">
+        ${empty ? "(punctuation omitted)" : v}
       </span>
-      ${isCustom ? '<span class="v-badge">custom</span>' : ""}
+      ${custom ? '<span class="v-tag custom">custom</span>' : ''}
     </div>`;
   });
-
   document.getElementById("outputBody").innerHTML = html;
 
   const capEl = document.getElementById("capWarn");
-  capEl.style.display = capped ? "block" : "none";
-  if (capped) capEl.textContent = `⚠ Variant count capped at ${MAX_VARIANTS}.`;
+  if (capped) {
+    capEl.style.display = "block";
+    capEl.textContent = `⚠ Variants capped at ${MAX_VARIANTS}. Word has many ambiguous characters.`;
+  } else {
+    capEl.style.display = "none";
+  }
 
-  if (variants.length > 0) document.getElementById("copyBtn").style.display = "inline-block";
+  if (all.length > 0) document.getElementById("copyBtn").style.display = "inline-block";
 
   if (unregChars.length > 0) {
     const warnCard = document.getElementById("warnCard");
-    warnCard.className = "warn-card";
+    warnCard.className   = "warn-card";
     warnCard.style.display = "block";
-    document.getElementById("warnTitle").className = "warn-title";
+    document.getElementById("warnTitle").className   = "warn-title";
     document.getElementById("warnTitle").textContent = "Unregistered characters";
-    document.getElementById("unregChars").innerHTML =
+    document.getElementById("unregChars").innerHTML  =
       unregChars.map(c => `<span class="unreg-chip">${c}</span>`).join("");
     document.getElementById("warnBody").innerHTML = `
-      These characters have no normalization rule and were skipped in the output.<br>
+      These characters have no normalization rule and were skipped.<br>
       To suggest a rule:<br>
       → <a href="${DISCORD_LINK}" target="_blank">Discord normalization channel</a><br>
       → Message <strong style="color:var(--accent2)">${DISCORD_USER}</strong>
@@ -898,9 +724,9 @@ function showOutput(result) {
 // ═══════════════════════════════════════════════════════════
 
 function copyOutput() {
-  const els = [...document.querySelectorAll(".v-text:not(.omit)")];
-  const text = els.map(el => el.textContent.trim()).filter(Boolean).join("\n");
-  navigator.clipboard.writeText(text).then(() => {
+  const texts = [...document.querySelectorAll(".v-text:not(.omit)")]
+    .map(el => el.textContent.trim()).filter(Boolean);
+  navigator.clipboard.writeText(texts.join("\n")).then(() => {
     const btn = document.getElementById("copyBtn");
     btn.textContent = "Copied!";
     setTimeout(() => btn.textContent = "Copy all", 1500);
@@ -935,7 +761,7 @@ document.getElementById("normalizeBtn").addEventListener("click", normalizeText)
 document.getElementById("clearBtn").addEventListener("click", clearAll);
 document.getElementById("copyBtn").addEventListener("click", copyOutput);
 
-renderCustom();
+renderOverrides();
 updateCount();
 </script>
 </body>
